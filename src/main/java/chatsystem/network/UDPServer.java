@@ -4,14 +4,29 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.SocketException;
+import java.util.ArrayList;
+import java.util.List;
 
-/** Create a UDP server that (once started) listens indefinitely on a given port. */
+/** UDP server that (once started) listens indefinitely on a given port. */
 public class UDPServer extends Thread {
 
+    /** Interface that observers of the UDP server must implement. */
+    public interface Observer {
+        /** Method that is called each time a message is received. */
+        void handle(UDPMessage received);
+    }
+
+
     private final DatagramSocket socket;
+    private final List<Observer> observers = new ArrayList<>();
 
     public UDPServer(int port) throws SocketException {
         socket = new DatagramSocket(port);
+    }
+
+    /** Adds a new observer to the class, for which the handle method will be called for each incoming message. */
+    public void addObserver(Observer obs) {
+        this.observers.add(obs);
     }
 
     @Override
@@ -24,10 +39,13 @@ public class UDPServer extends Thread {
                 // wait for the next message
                 socket.receive(packet);
 
-                // extarct and print message
+                // extract and print message
                 String received = new String(packet.getData(), 0, packet.getLength());
                 UDPMessage message = new UDPMessage(received, packet.getAddress());
-                System.out.println("Received: " + message);
+
+                for (Observer obs : this.observers) {
+                    obs.handle(message);
+                }
             } catch (IOException e) {
                 System.err.println("Receive error: " + e.getMessage());
             }
