@@ -26,7 +26,9 @@ public class UDPServer extends Thread {
 
     /** Adds a new observer to the class, for which the handle method will be called for each incoming message. */
     public void addObserver(Observer obs) {
-        this.observers.add(obs);
+        synchronized (this.observers) {
+            this.observers.add(obs);
+        }
     }
 
     @Override
@@ -43,8 +45,10 @@ public class UDPServer extends Thread {
                 String received = new String(packet.getData(), 0, packet.getLength());
                 UDPMessage message = new UDPMessage(received, packet.getAddress());
 
-                for (Observer obs : this.observers) {
-                    obs.handle(message);
+                synchronized (this.observers) {
+                    for (Observer obs : this.observers) {
+                        obs.handle(message);
+                    }
                 }
             } catch (IOException e) {
                 System.err.println("Receive error: " + e.getMessage());
