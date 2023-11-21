@@ -1,8 +1,11 @@
 package chatsystem;
 
 
+import chatsystem.network.UDPSender;
 import chatsystem.network.UDPServer;
 
+import java.io.IOException;
+import java.net.InetAddress;
 import java.net.SocketException;
 
 public class Main {
@@ -18,6 +21,14 @@ public class Main {
         } catch (SocketException e) {
             System.err.println("Could not start UDP server: " + e.getMessage());
             System.exit(1);
+        }
+
+        try {
+            UDPSender.sendLocalhost(PORT, "HELLO");
+            UDPSender.sendLocalhost(PORT, "HELLO2");
+            UDPSender.sendLocalhost(PORT, "HELLO3");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 }
