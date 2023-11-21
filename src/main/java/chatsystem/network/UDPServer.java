@@ -26,7 +26,8 @@ public class UDPServer extends Thread {
 
                 // extarct and print message
                 String received = new String(packet.getData(), 0, packet.getLength());
-                System.out.println("Received: " + received);
+                UDPMessage message = new UDPMessage(received, packet.getAddress());
+                System.out.println("Received: " + message);
             } catch (IOException e) {
                 System.err.println("Receive error: " + e.getMessage());
             }
