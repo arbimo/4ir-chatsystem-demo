@@ -1,5 +1,6 @@
 package chatsystem.contacts;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class ContactListTests {
@@ -18,10 +19,15 @@ public class ContactListTests {
         }
     }
 
+    @BeforeEach
+    public void clearContactList() {
+        ContactList.getInstance().clear();
+    }
+
 
     @Test
     void contactAdditionTest() throws ContactAlreadyExists {
-        ContactList contacts = new ContactList();
+        ContactList contacts = ContactList.getInstance();
 
         assert !contacts.hasUserName("alice");
         contacts.addUser("alice");
@@ -37,7 +43,7 @@ public class ContactListTests {
 
     @Test
     void contactDuplicationTest() throws ContactAlreadyExists {
-        ContactList contacts = new ContactList();
+        ContactList contacts = ContactList.getInstance();
         contacts.addUser("alice");
         assert contacts.hasUserName("alice");
 

@@ -6,9 +6,15 @@ import java.util.List;
 /** List of connected users. */
 public class ContactList {
 
+    private static final ContactList INSTANCE = new ContactList();
+
+    public static ContactList getInstance() {
+        return INSTANCE;
+    }
+
     List<Contact> contacts = new ArrayList<>();
 
-    public ContactList() {
+    private ContactList() {
     }
 
     public synchronized void addUser(String username) throws ContactAlreadyExists {
@@ -32,5 +38,9 @@ public class ContactList {
     public synchronized List<Contact> getAllContacts() {
         // return defensive copy of the contacts to avoid anybody modifying it or doing unsynchronized access
         return new ArrayList<>(this.contacts);
+    }
+
+    public synchronized void clear() {
+        this.contacts.clear();
     }
 }
