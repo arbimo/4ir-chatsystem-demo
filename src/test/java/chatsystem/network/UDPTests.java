@@ -19,7 +19,6 @@ public class UDPTests {
         List<String> receivedMessages = new ArrayList<>();
         UDPServer server = new UDPServer(TEST_PORT);
         server.addObserver(message -> {
-            System.out.println("received: " + message.content());
             receivedMessages.add(message.content());
         });
         server.start();

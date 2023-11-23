@@ -1,5 +1,8 @@
 package chatsystem.network;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -9,6 +12,8 @@ import java.util.List;
 
 /** UDP server that (once started) listens indefinitely on a given port. */
 public class UDPServer extends Thread {
+
+    private static final Logger LOGGER = LogManager.getLogger(UDPServer.class);
 
     /** Interface that observers of the UDP server must implement. */
     public interface Observer {
@@ -44,6 +49,8 @@ public class UDPServer extends Thread {
                 // extract and print message
                 String received = new String(packet.getData(), 0, packet.getLength());
                 UDPMessage message = new UDPMessage(received, packet.getAddress());
+
+                LOGGER.trace("Received on port " + socket.getLocalPort() + ": " + message.content() + " from " + message.origin());
 
                 synchronized (this.observers) {
                     for (Observer obs : this.observers) {
