@@ -6,6 +6,12 @@ import java.util.List;
 /** List of connected users. */
 public class ContactList {
 
+    public interface Observer {
+        void newContactAdded(Contact contact);
+        void nicknameChanged(Contact newContact, String previousNickname);
+    }
+
+
     private static final ContactList INSTANCE = new ContactList();
 
     public static ContactList getInstance() {
@@ -13,8 +19,13 @@ public class ContactList {
     }
 
     List<Contact> contacts = new ArrayList<>();
+    List<Observer> observers = new ArrayList<>();
 
     private ContactList() {
+    }
+
+    public synchronized void addObserver(Observer obs) {
+        this.observers.add(obs);
     }
 
     public synchronized void addUser(String username) throws ContactAlreadyExists {
@@ -23,6 +34,9 @@ public class ContactList {
         } else {
             Contact contact = new Contact(username);
             contacts.add(contact);
+            for (Observer obs : observers) {
+                obs.newContactAdded(contact);
+            }
         }
     }
 

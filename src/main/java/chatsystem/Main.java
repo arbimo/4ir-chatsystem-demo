@@ -2,12 +2,11 @@ package chatsystem;
 
 import chatsystem.controller.Controller;
 import chatsystem.network.UDPServer;
+import chatsystem.ui.View;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.config.Configurator;
-
-import java.io.IOException;
 import java.net.SocketException;
 
 public class Main {
@@ -16,12 +15,11 @@ public class Main {
 
     public static final int PORT = 1789;
 
-    static int COUNTER = 0;
-
     public static void main(String[] args) {
         Configurator.setRootLevel(Level.INFO);
         LOGGER.info("Starting ChatSystem application");
-        System.out.println("Welcome to the ChatSystem program");
+
+        View.initialize();
 
         try {
             UDPServer server = new UDPServer(PORT);
