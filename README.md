@@ -38,3 +38,12 @@ echo -n "bob" > /dev/udp/127.0.0.1/1789
 echo -n "chloe" > /dev/udp/127.0.0.1/1789
 echo -n "alice" > /dev/udp/127.0.0.1/1789
 ```
+
+
+
+## Code overview
+
+Below is a UML diagram highlighting the main packages and classes of the code (from Evelyne Akokpyan).
+Also available in the [diagram.png](https://raw.githubusercontent.com/arbimo/4ir-chatsystem-demo/refs/heads/main/diagram.png) file.
+
+![UML Diagram](diagram.png)
